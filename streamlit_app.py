@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 import torch
 from ultralytics import YOLO
@@ -25,14 +25,22 @@ if camera:
     # Perform object detection
     results = model(img_array)
 
-    # Draw bounding boxes on the image
-    annotated_img = results.plot()  # This will draw bounding boxes on the image
+    # Get detection results
+    detections = results.pandas().xyxy[0]
+    draw = ImageDraw.Draw(image)
+    
+    # Load a font
+    try:
+        font = ImageFont.truetype("arial.ttf", 15)
+    except IOError:
+        font = ImageFont.load_default()
 
-    # Convert numpy array to PIL Image for display
-    annotated_img_pil = Image.fromarray(annotated_img)
+    # Draw bounding boxes
+    for _, row in detections.iterrows():
+        x1, y1, x2, y2, conf, cls = int(row['xmin']), int(row['ymin']), int(row['xmax']), int(row['ymax']), row['confidence'], int(row['class'])
+        label = f"{model.names[cls]} {conf:.2f}"
+        draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
+        draw.text((x1, y1), label, fill="red", font=font)
 
     # Display the annotated image
-    st.image(annotated_img_pil, caption="Detected Objects", use_column_width=True)
-
-    # Display detection results
-    st.write(results.pandas().xyxy[0])
+    st.image(image, caption="Detected Objects", use_column_width=True)
