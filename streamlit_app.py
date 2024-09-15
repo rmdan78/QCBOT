@@ -36,5 +36,3 @@ if camera:
     # Display the annotated image
     st.image(annotated_img_pil, caption="Detected Objects", use_column_width=True)
 
-    # Display detection results
-    st.write(results.pandas().xyxy[0])
