@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import torch
-
+import cv2
 # Load YOLOv5 model
 @st.cache_resource
 def load_model():
