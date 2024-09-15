@@ -7,7 +7,7 @@ from ultralytics import YOLO
 st.title("Camera Input with YOLO Detection")
 
 # Load YOLO model
-model = YOLO("yolov5.pt")  # Make sure this model file exists
+model = YOLO("yolov5n.pt")  # Make sure this model file exists
 
 # Camera input
 camera = st.camera_input("Capture an image")
