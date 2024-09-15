@@ -6,7 +6,7 @@ import cv2
 # Load YOLOv5 model
 @st.cache_resource
 def load_model():
-    model = torch.hub.load('ultralytics/yolov8', 'yolov8s', pretrained=True)
+    model = torch.hub.load('ultralytics/yolov8', 'yolov8n', pretrained=True)
     return model
 
 model = load_model()
